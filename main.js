@@ -2,6 +2,7 @@
 const {app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const { getLanguagesJSON } = require("./languages/languages");
+const { getMangaByName } = require("./manga_finder/manga_finder");
 let win;
 let mangahost = "https://mangahosted.com/find/";
 let mangahostimages = "https://img-host.filestatic3.xyz/mangas_files/my-wife-is-a-demon-queen/310/";
@@ -17,10 +18,7 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  ipcMain.handle("get-mangas-by-name", (event, args) => {
-    console.log(`${args}`)
-    return args;
-  });
+  ipcMain.handle("get-mangas-by-name", (event, args) => getMangaByName(args));
 
   ipcMain.handle("get-languages", (event, args) => getLanguagesJSON());
 
@@ -56,14 +54,14 @@ app.on('window-all-closed', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-ipcMain.on("get-languages", (event, args) => {
-  // win.webContents.send("send-languages", `test_${String(getLanguagesJSON())}`);
-  // win.webContents.send("send-languages", getLanguagesJSON());
+// ipcMain.on("get-languages", (event, args) => {
+//   // win.webContents.send("send-languages", `test_${String(getLanguagesJSON())}`);
+//   // win.webContents.send("send-languages", getLanguagesJSON());
   
-  console.log("main");
-  console.log(args);
-  event.sender.send("send-languages", getLanguagesJSON());
-});
+//   console.log("main");
+//   console.log(args);
+//   event.sender.send("send-languages", getLanguagesJSON());
+// });
 
 // ipcMain.on("get-mangas-by-name", (event, args) => {
 //   // win.webContents.send("send-languages", `test_${String(getLanguagesJSON())}`);

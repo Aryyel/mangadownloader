@@ -38,3 +38,10 @@ Note: If you're using Linux Bash for Windows, [see this guide](https://www.howto
 ## License
 
 [CC0 1.0 (Public Domain)](LICENSE.md)
+
+
+## Important Stackoverflow links
+https://stackoverflow.com/questions/45578844/how-to-set-header-and-options-in-axios
+
+https://stackoverflow.com/questions/18333427/how-to-insert-a-row-in-an-html-table-body-in-javascript
+
