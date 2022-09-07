@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://img-host.filestatic3.xyz/ https://mangahosted.com/find/ 'self';  script-src 'self'; style-src 'self' 'unsafe-inline'">
+    <link href="./styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h1 id="title"></h1>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="nameInput" class="form-label" id="nameInputLabel"></label>
+            <input type="text" class="form-control" id="nameInput" placeholder="">
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn btn-primary float-end" id="searchButton"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-4" id="">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h1 id="resultsTitle"></h1>
+        </div>
+        <div class="card-body table-responsive" style="max-height: 250px;">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col" id="tableHeaderName"></th>
+                <th scope="col" id="tableHeaderDescription"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <a style="height:110px;" href="#">
+                  <td class="mangaName">Dsadasdadsa</td>
+                  <td class="mangaDescription">dasdadsadasd</td>
+                </a>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn btn-secondary" id="selectedAmount">Selected: 23232</a>
+          <a href="#" class="btn btn-primary float-end" id="downloadButton"></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- <h1>Hello World!</h1>
+    We are using Node.js <span id="node-version"></span>,
+    Chromium <span id="chrome-version"></span>,
+    and Electron <span id="electron-version"></span>.
+     -->
+    <!-- You can also require other files to run in this process !-->
+    <script type="text/javascript" src="./renderer.js"></script>
+  </body>
+</html>

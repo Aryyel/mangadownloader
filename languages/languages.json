@@ -1,0 +1,34 @@
+{
+    "languages": [
+        {
+            "name": "portuguese",
+            "code": "pt-BR",
+            "translations": {
+                "TITLE": "Baixar mangas/manhwas",
+                "NAME_INPUT_LABEL": "Insira o nome aproximado do mangá/manhwa",
+                "NAME_INPUT_PLACEHOLDER": "Overlord, Higurashi, etc",
+                "INSERT_MANGA_NAME_EXAMPLE": "Overlord, Higurashi, etc",
+                "SEARCH_BUTTON_TEXT": "Pesquisar",
+                "RESULTS_TITLE": "Resultados da pesquisa",
+                "DOWNLOAD_BUTTON_TEXT": "Baixar selecionados",
+                "TABLE_HEADER_NAME": "Nome",
+                "TABLE_HEADER_DESCRIPTION": "Descrição"
+            }
+        },
+        {
+            "name": "english",
+            "code": "en-US",
+            "translations": {
+                "TITLE": "Download mangas/manhwa",
+                "NAME_INPUT_LABEL": "Insert the name of the manga/manhwa",
+                "NAME_INPUT_PLACEHOLDER": "Overlord, Higurashi, etc",
+                "INSERT_MANGA_NAME_EXAMPLE": "Overlord, Higurashi, etc",
+                "SEARCH_BUTTON_TEXT": "Search",
+                "RESULTS_TITLE": "Search results",
+                "DOWNLOAD_BUTTON_TEXT": "Download selected",
+                "TABLE_HEADER_NAME": "Name",
+                "TABLE_HEADER_DESCRIPTION": "Description"
+            }
+        }
+    ]
+}

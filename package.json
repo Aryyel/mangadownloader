@@ -1,0 +1,22 @@
+{
+  "name": "manga-downloader",
+  "version": "1.0.0",
+  "description": "A application to download mangas",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "manga",
+    "downloader"
+  ],
+  "author": "Aryel",
+  "devDependencies": {
+    "electron": "^20.1.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.0"
+  }
+}
