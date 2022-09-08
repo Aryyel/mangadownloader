@@ -5,14 +5,47 @@
 // selectively enable features needed in the rendering
 // process.
 
-window.addEventListener("load", () => {
+window.addEventListener("load", () => { 
+
+    const toggleSearchButton = () => {
+        const searchButton = document.getElementById("searchButton");
+        if (!searchButton)
+            return;
+
+        searchButton.disabled 
+            ? searchButton.removeAttribute("disabled") 
+            : searchButton.setAttribute("disabled", "");
+        
+        toggleLoading();
+    }
+
+    const toggleLoading = () => {
+        const searchButton = document.getElementById("searchButton");
+        searchButton.disabled 
+            ? searchButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span>${window.activeTranslations.LOADING_TEXT}</span>`
+            : searchButton.innerHTML = window.activeTranslations.SEARCH_BUTTON_TEXT;
+    }
+
+    const updateSelectedAmount = amount => {
+        const selectedAmount = document.getElementById("selectedAmount");
+        const newAmount = parseInt(selectedAmount.getAttribute("amount")) + amount;
+        selectedAmount.innerText = `${window.activeTranslations.SELECTED_AMOUNT_TEXT}: ${newAmount}`
+        selectedAmount.setAttribute("amount", newAmount);
+    }
 
     const toggleSelectedRow = row => {
         
-        if (row && row.classList.contains("table-active"))
+        if (row && row.classList.contains("table-active")){
             row.classList.remove("table-active");
-        else
+            window.selectedRows = window.selectedRows.filter(selectedRow => selectedRow !== row.querySelector("td[class='mangaName']").innerText)
+            updateSelectedAmount(-1);
+        }
+        else{
             row.classList.add("table-active");
+            window.selectedRows.push(row.querySelector("td[class='mangaName']").innerText); 
+            updateSelectedAmount(1);
+        }
     }   
 
     const selectTableRow = event => {
@@ -24,18 +57,19 @@ window.addEventListener("load", () => {
             return;
 
         toggleSelectedRow(parentElement);
-        parentElement.querySelector("td[class='mangaName']");
     }
 
     const searchForMangas = async () => {
+        toggleSearchButton();
         const results = await window.api.receive("get-mangas-by-name", document.getElementById("nameInput").value);
         clearTableBody();
         insertResults(results);
+        toggleSearchButton();
     }
     
     const clearTableBody = () => {
         const tableTBody = document.getElementsByTagName("tbody") ? document.getElementsByTagName("tbody")[0] : null;
-        if (!tableTBody || !tableTBody.length)
+        if (!tableTBody)
             return;
         
         tableTBody.innerHTML = null;
@@ -53,6 +87,11 @@ window.addEventListener("load", () => {
             newRow.innerHTML = `<tr>
                                     <td class="mangaName">${result.mangaName}</td>
                                     <td class="mangaDescription">${result.mangaDescription}</td>
+                                    <td class="mangaHeaderChapters">
+                                        <button type="button" class="btn btn-success" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#chaptersModal">${window.activeTranslations.TABLE_HEADER_SELECT_CHAPTERS_BUTTON}</button>
+                                    </td>
                                 </tr>`;
         }
     }
@@ -67,24 +106,30 @@ window.addEventListener("load", () => {
         insertTranslations(window.languages.filter(language => language.code === window.activeLanguageCode)[0].translations);
     }
     
-    const insertTranslations = (translations) => {
+    const insertTranslations = translations => {
         const title = document.getElementById("title");
         const nameInput = document.getElementById("nameInput");
         const nameInputLabel = document.getElementById("nameInputLabel");
         const searchButton = document.getElementById("searchButton");
+        const selectedAmount = document.getElementById("selectedAmount");
         const resultsTitle = document.getElementById("resultsTitle");
         const downloadButton = document.getElementById("downloadButton");
         const tableHeaderName = document.getElementById("tableHeaderName");
         const tableHeaderDescription = document.getElementById("tableHeaderDescription");
-    
+        const tableHeaderChapters = document.getElementById("tableHeaderChapters");
+
         title.innerText = translations.TITLE;
         nameInput.placeholder = translations.NAME_INPUT_PLACEHOLDER;
         nameInputLabel.innerText = translations.NAME_INPUT_LABEL;
         searchButton.innerText = translations.SEARCH_BUTTON_TEXT;
+        selectedAmount.innerText = `${translations.SELECTED_AMOUNT_TEXT}: ${selectedAmount.getAttribute("amount")}`;
         resultsTitle.innerText = translations.RESULTS_TITLE;
         downloadButton.innerText = translations.DOWNLOAD_BUTTON_TEXT;
         tableHeaderName.innerText = translations.TABLE_HEADER_NAME;
         tableHeaderDescription.innerText = translations.TABLE_HEADER_DESCRIPTION;
+        tableHeaderChapters.innerText = translations.TABLE_HEADER_SELECT_CHAPTERS_TITLE;
+
+        window.activeTranslations = translations;
     }
      
     const searchButton = document.getElementById("searchButton");
@@ -92,6 +137,7 @@ window.addEventListener("load", () => {
     searchButton.addEventListener("click", searchForMangas);
     table.addEventListener("click", selectTableRow);
 
+    window.selectedRows = window.selectedRows ? window.selectedRows : [];
 
     loadLanguages();
 

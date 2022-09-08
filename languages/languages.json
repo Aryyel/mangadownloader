@@ -9,10 +9,14 @@
                 "NAME_INPUT_PLACEHOLDER": "Overlord, Higurashi, etc",
                 "INSERT_MANGA_NAME_EXAMPLE": "Overlord, Higurashi, etc",
                 "SEARCH_BUTTON_TEXT": "Pesquisar",
+                "LOADING_TEXT": "Carregando",
+                "SELECTED_AMOUNT_TEXT": "Selecionados",
                 "RESULTS_TITLE": "Resultados da pesquisa",
                 "DOWNLOAD_BUTTON_TEXT": "Baixar selecionados",
                 "TABLE_HEADER_NAME": "Nome",
-                "TABLE_HEADER_DESCRIPTION": "Descrição"
+                "TABLE_HEADER_DESCRIPTION": "Descrição",
+                "TABLE_HEADER_SELECT_CHAPTERS_TITLE": "Selecionar Capítulos",
+                "TABLE_HEADER_SELECT_CHAPTERS_BUTTON": "Selecionar Capítulos"
             }
         },
         {
@@ -24,10 +28,14 @@
                 "NAME_INPUT_PLACEHOLDER": "Overlord, Higurashi, etc",
                 "INSERT_MANGA_NAME_EXAMPLE": "Overlord, Higurashi, etc",
                 "SEARCH_BUTTON_TEXT": "Search",
+                "LOADING_TEXT": "Loading",
+                "SELECTED_AMOUNT_TEXT": "Selected",
                 "RESULTS_TITLE": "Search results",
                 "DOWNLOAD_BUTTON_TEXT": "Download selected",
                 "TABLE_HEADER_NAME": "Name",
-                "TABLE_HEADER_DESCRIPTION": "Description"
+                "TABLE_HEADER_DESCRIPTION": "Description",
+                "TABLE_HEADER_SELECT_CHAPTERS_TITLE": "Select Chapters",
+                "TABLE_HEADER_SELECT_CHAPTERS_BUTTON": "Select Chapters"
             }
         }
     ]

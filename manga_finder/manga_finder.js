@@ -21,11 +21,9 @@ const getMangaByName = async name => {
                 mangaDescription: `${$(element).children(".entry-content").text()}`
             });
 		});
-
-        console.log(results);
         
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 
     return results;
