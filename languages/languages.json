@@ -15,8 +15,9 @@
                 "DOWNLOAD_BUTTON_TEXT": "Baixar selecionados",
                 "TABLE_HEADER_NAME": "Nome",
                 "TABLE_HEADER_DESCRIPTION": "Descrição",
-                "TABLE_HEADER_SELECT_CHAPTERS_TITLE": "Selecionar Capítulos",
-                "TABLE_HEADER_SELECT_CHAPTERS_BUTTON": "Selecionar Capítulos"
+                "TABLE_HEADER_SELECT_CHAPTERS_TITLE": "Selecionar capítulos",
+                "TABLE_HEADER_SELECT_CHAPTERS_BUTTON": "Selecionar capítulos",
+                "MODAL_TITLE": "Selecionar capítulos"
             }
         },
         {
@@ -35,7 +36,8 @@
                 "TABLE_HEADER_NAME": "Name",
                 "TABLE_HEADER_DESCRIPTION": "Description",
                 "TABLE_HEADER_SELECT_CHAPTERS_TITLE": "Select Chapters",
-                "TABLE_HEADER_SELECT_CHAPTERS_BUTTON": "Select Chapters"
+                "TABLE_HEADER_SELECT_CHAPTERS_BUTTON": "Select Chapters",
+                "MODAL_TITLE": "Select chapters"
             }
         }
     ]

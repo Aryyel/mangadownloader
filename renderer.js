@@ -7,6 +7,31 @@
 
 window.addEventListener("load", () => { 
 
+    const addManyEventListeners = (element, type, callbackFunction) => 
+    element.addEventListener(type, callbackFunction)
+
+    const insertChaptersIntoModal = results => {
+
+        const modalChapters = document.getElementById("chapters");
+
+        if (!results || !modalChapters)
+            return;
+        
+        for (const result of results) 
+            modalChapters.innerHTML += `<a class="btn btn-primary mb-1" type="submit">${result.chapterNumber}</a>`; 
+
+    }
+
+    const loadChaptersByMangaURL = async event => {
+        const response = await window.api.receive("get-chapters", event.target.getAttribute("manga"));
+
+        if (!response)
+            return;
+        
+        clearElementInnerHTML(document.getElementById("chapters"));
+        insertChaptersIntoModal(response);
+    }
+
     const toggleSearchButton = () => {
         const searchButton = document.getElementById("searchButton");
         if (!searchButton)
@@ -62,17 +87,16 @@ window.addEventListener("load", () => {
     const searchForMangas = async () => {
         toggleSearchButton();
         const results = await window.api.receive("get-mangas-by-name", document.getElementById("nameInput").value);
-        clearTableBody();
+        clearElementInnerHTML(document.getElementsByTagName("tbody") ? document.getElementsByTagName("tbody")[0] : null);
         insertResults(results);
         toggleSearchButton();
     }
-    
-    const clearTableBody = () => {
-        const tableTBody = document.getElementsByTagName("tbody") ? document.getElementsByTagName("tbody")[0] : null;
-        if (!tableTBody)
+
+    const clearElementInnerHTML = element => {
+        if (!element)
             return;
         
-        tableTBody.innerHTML = null;
+        element.innerHTML = null;
     }
 
     const insertResults = results => {
@@ -89,11 +113,17 @@ window.addEventListener("load", () => {
                                     <td class="mangaDescription">${result.mangaDescription}</td>
                                     <td class="mangaHeaderChapters">
                                         <button type="button" class="btn btn-success" 
+                                        manga="${result.mangaURL}"
                                         data-bs-toggle="modal" 
                                         data-bs-target="#chaptersModal">${window.activeTranslations.TABLE_HEADER_SELECT_CHAPTERS_BUTTON}</button>
                                     </td>
+                                    <td class="d-none">${result.mangaURL}</td>
                                 </tr>`;
+
+            const newRowButton = newRow.querySelector("button");
+            newRowButton.addEventListener("click", loadChaptersByMangaURL);
         }
+        
     }
 
     const loadLanguages = async () => {

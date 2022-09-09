@@ -4,7 +4,7 @@ const { contextBridge, ipcRenderer, ipcMain } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
   receive: (channel, args) => {
-    const validChannels = ["get-languages", "get-mangas-by-name"];
+    const validChannels = ["get-languages", "get-mangas-by-name", "get-chapters"];
     var result = null;
     if (validChannels.includes(channel))
       result = ipcRenderer.invoke(channel, args);
