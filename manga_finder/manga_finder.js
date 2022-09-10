@@ -45,13 +45,10 @@ const getChapterByMangaURL = async url => {
         const $ = cheerio.load(data);
 
         $(".cap").each((index, element) => {
-            // $(".cap").each((index, element) => {
-            //     console.log($(element).find("a.btn-caps.w-button").attr("id"))
-            //  });
-            console.log($(element).children("a").text());
-            console.log($(element).children("a").attr("id"));
+            console.log($(element).children("a.btn-caps.w-button").text());
+            console.log($(element).children("a.btn-caps.w-button").attr("id"));
             results.push({
-                chapterNumber: `${$(element).find("a.btn-caps.w-button").attr("id")}`
+                chapterNumber: `${$(element).find("a.btn-caps.w-button").text()}`
             });
         });
         
@@ -62,7 +59,39 @@ const getChapterByMangaURL = async url => {
     return results;
 }
 
+const getMangaFilesByChapter = async (mangaName, url, chapter) => {
+    const result = {
+        mangaName,
+        mangaURLs: [],
+        chapter,
+        url
+    };
+
+    try {
+        const { data } = await axios.get(`${url}/${chapter}`, {
+            headers: {
+                "User-Agent": USER_AGENT
+            }
+        } );
+
+        const $ = cheerio.load(data);
+
+        $("img[id^='img_").each((index, element) => {
+            //https://img-host.filestatic3.xyz/mangas_files/overlord/67.2/img_or0307221621_0001.jpg
+            result.mangaURLs.push({
+                chapterUrl: `${$(element).attr("src")}`
+            });
+        });
+        
+    } catch (error) {
+        console.error(error);
+    }
+
+    return result;
+} 
+
 module.exports = {
     getMangaByName,
-    getChapterByMangaURL
+    getChapterByMangaURL,
+    getMangaFilesByChapter
 }

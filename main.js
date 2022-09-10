@@ -2,7 +2,8 @@
 const {app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const { getLanguagesJSON } = require("./languages/languages");
-const { getMangaByName, getChapterByMangaURL } = require("./manga_finder/manga_finder");
+const { getMangaByName, getChapterByMangaURL, getMangaFilesByChapter } = require("./manga_finder/manga_finder");
+const { downloadMangaIntoDirectory } = require("./manga_finder/manga_downloader");
 let win;
 let mangahost = "https://mangahosted.com/find/";
 let mangahostimages = "https://img-host.filestatic3.xyz/mangas_files/my-wife-is-a-demon-queen/310/";
@@ -18,6 +19,12 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
+  ipcMain.handle("get-manga-files-by-chapter", (event, mangaChapterData) => {
+    const { directory, mangaName, url, chapter } = mangaChapterData;
+    const mangaChapterFiles = getMangaFilesByChapter(mangaName, url, chapter);
+    return downloadMangaIntoDirectory(directory, mangaChapterFiles);
+  });
+
   ipcMain.handle("get-chapters", (event, args) => getChapterByMangaURL(args));
 
   ipcMain.handle("get-mangas-by-name", (event, args) => getMangaByName(args));

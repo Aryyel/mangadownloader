@@ -7,7 +7,6 @@
                 "TITLE": "Baixar mangas/manhwas",
                 "NAME_INPUT_LABEL": "Insira o nome aproximado do mangá/manhwa",
                 "NAME_INPUT_PLACEHOLDER": "Overlord, Higurashi, etc",
-                "INSERT_MANGA_NAME_EXAMPLE": "Overlord, Higurashi, etc",
                 "SEARCH_BUTTON_TEXT": "Pesquisar",
                 "LOADING_TEXT": "Carregando",
                 "SELECTED_AMOUNT_TEXT": "Selecionados",
@@ -17,7 +16,14 @@
                 "TABLE_HEADER_DESCRIPTION": "Descrição",
                 "TABLE_HEADER_SELECT_CHAPTERS_TITLE": "Selecionar capítulos",
                 "TABLE_HEADER_SELECT_CHAPTERS_BUTTON": "Selecionar capítulos",
-                "MODAL_TITLE": "Selecionar capítulos"
+                "MODAL_TITLE": "Selecionar capítulos",
+                "PATH_INPUT_LABEL": "Insira o caminho completo para a pasta desejada",
+                "PATH_INPUT_PLACEHOLDER": "Ex: C:/Arquivos de Programas/Minha Pasta",
+                "MODAL_DOWNLOAD_BUTTON": "Baixar selecionados",
+                "MODAL_SELECT_ALL_BUTTON": "Selecionar todos",
+                "MODAL_DESELECT_ALL_BUTTON": "Desselecionar todos",
+                "MODAL_CLOSE_BBUTTON": "Fechar"
+
             }
         },
         {
@@ -27,7 +33,6 @@
                 "TITLE": "Download mangas/manhwa",
                 "NAME_INPUT_LABEL": "Insert the name of the manga/manhwa",
                 "NAME_INPUT_PLACEHOLDER": "Overlord, Higurashi, etc",
-                "INSERT_MANGA_NAME_EXAMPLE": "Overlord, Higurashi, etc",
                 "SEARCH_BUTTON_TEXT": "Search",
                 "LOADING_TEXT": "Loading",
                 "SELECTED_AMOUNT_TEXT": "Selected",
@@ -37,7 +42,13 @@
                 "TABLE_HEADER_DESCRIPTION": "Description",
                 "TABLE_HEADER_SELECT_CHAPTERS_TITLE": "Select Chapters",
                 "TABLE_HEADER_SELECT_CHAPTERS_BUTTON": "Select Chapters",
-                "MODAL_TITLE": "Select chapters"
+                "MODAL_TITLE": "Select chapters",
+                "PATH_INPUT_LABEL": "Insert the full path of the desired folder",
+                "PATH_INPUT_PLACEHOLDER": "Ex: C:/Program Files/MyFolder",
+                "MODAL_DOWNLOAD_BUTTON": "Download selected",
+                "MODAL_SELECT_ALL_BUTTON": "Select all",
+                "MODAL_DESELECT_ALL_BUTTON": "Deselect all",
+                "MODAL_CLOSE_BBUTTON": "Close"
             }
         }
     ]

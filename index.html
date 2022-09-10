@@ -24,9 +24,10 @@
           </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-secondary">Save changes</button>
-            <button type="button" class="btn btn-primary">Download all</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeButton"></button>
+            <button type="button" class="btn btn-secondary" id="deselectAllButton"></button>
+            <button type="button" class="btn btn-secondary" id="selectAllButton"></button>
+            <button type="button" class="btn btn-primary" id="downloadSelectedButton"></button>
           </div>
         </div>
       </div>
@@ -40,6 +41,10 @@
           <div class="mb-3">
             <label for="nameInput" class="form-label" id="nameInputLabel"></label>
             <input type="text" class="form-control" id="nameInput" placeholder="">
+          </div>
+          <div class="mb-3">
+            <label for="pathInput" class="form-label" id="pathInputLabel"></label>
+            <input type="text" class="form-control" id="pathInput" placeholder="">
           </div>
         </div>
         <div class="card-footer">

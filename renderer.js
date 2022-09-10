@@ -7,29 +7,107 @@
 
 window.addEventListener("load", () => { 
 
+    const removeDeselectedChapters = (mangaName, chapterNumber) => {
+        const selectedManga = window.selectedMangas.find(selectedManga => selectedManga.contains(mangaName));
+
+        if (selectedManga){
+            window.selectedMangas.find(selectedManga => selectedManga.contains(mangaName)).chapters = selectedManga.chapters.filter(chapter => chapter !== chapterNumber);
+        }
+    }
+
+    const addSelectedChapters = (mangaName, chapterNumber) => {
+        const selectedManga = window.selectedMangas.find(selectedManga => selectedManga.mangaName == mangaName);
+
+        if (selectedManga){
+            window.selectedMangas.find(selectedManga => selectedManga.contains(mangaName)).chapters.push(chapterNumber);
+        }
+        else {
+            window.selectedMangas.push({
+                mangaName,
+                chapters: [ chapterNumber ]
+            }); 
+        }
+    }   
+
+    const deselectAllChapters = () => {
+        const modalTitle = document.getElementById("modalTitle");
+
+        for (const chapter of document.querySelectorAll("#chapters a")){
+            chapter.classList.remove("active");
+            chapter.setAttribute("aria-pressed", "false");
+            removeDeselectedChapters(modalTitle.innerText, chapter.innerText);
+        }
+    }
+
+    const selectAllChapters = () => {
+        const modalTitle = document.getElementById("modalTitle");
+
+        for (const chapter of document.querySelectorAll("#chapters a")){
+            chapter.classList.add("active");
+            chapter.setAttribute("aria-pressed", "true");
+            addSelectedChapters(modalTitle.innerText, chapter.innerText);
+        }
+    }
+
+    const downloadSelectedChapters = () => {
+
+        const directory = document.getElementById("pathInput");
+        const mangaName = document.getElementById("pathInput");
+        const url = document.getElementById("pathInput");
+        const chapter = document.getElementById("pathInput");
+
+        const chaptersToDownload = {
+            
+        }
+
+        window.api.receive("get-manga-files-by-chapter", )
+    }
+
     const addManyEventListeners = (element, type, callbackFunction) => 
     element.addEventListener(type, callbackFunction)
 
     const insertChaptersIntoModal = results => {
 
         const modalChapters = document.getElementById("chapters");
+        const modalTitle = document.getElementById("modalTitle");
 
-        if (!results || !modalChapters)
+        if (!results || !modalChapters || !modalTitle)
             return;
         
-        for (const result of results) 
-            modalChapters.innerHTML += `<a class="btn btn-primary mb-1" type="submit">${result.chapterNumber}</a>`; 
+        for (const result of results) {
+            modalChapters.innerHTML += `<a class="btn btn-primary mb-1" style="width: 65px;" 
+                                        type="submit" data-bs-toggle="button">${result.chapterNumber}</a>`;
+            
+            
+            const selectedManga = window.selectedMangas.find(selectedManga => selectedManga.mangaName == modalTitle.innerText);
 
+            if (selectedManga){
+                window.selectedMangas.find(selectedManga => selectedManga.mangaName == modalTitle.innerText).chapters.push(result.chapterNumber);
+            }
+            else {
+                window.selectedMangas.push({
+                    mangaName: modalTitle.innerText,
+                    chapters: []
+                }); 
+            }
+            
+        }
+
+        // const chapters = document.querySelectorAll("#chapters a");
     }
 
     const loadChaptersByMangaURL = async event => {
+        
+        const modalTitle = document.getElementById("modalTitle");
+        clearElementInnerHTML(document.getElementById("chapters"));
+        clearElementInnerHTML(modalTitle);
         const response = await window.api.receive("get-chapters", event.target.getAttribute("manga"));
 
         if (!response)
             return;
         
-        clearElementInnerHTML(document.getElementById("chapters"));
         insertChaptersIntoModal(response);
+        insertElementInnerHTML(modalTitle, event.target.closest("tr").querySelector(".mangaName").innerText);
     }
 
     const toggleSearchButton = () => {
@@ -61,14 +139,20 @@ window.addEventListener("load", () => {
 
     const toggleSelectedRow = row => {
         
-        if (row && row.classList.contains("table-active")){
+        if (!row)
+            return;
+
+        if (row.classList.contains("table-active")){
             row.classList.remove("table-active");
-            window.selectedRows = window.selectedRows.filter(selectedRow => selectedRow !== row.querySelector("td[class='mangaName']").innerText)
+            window.selectedMangas = window.selectedMangas.filter(selectedManga => selectedManga.mangaName !== row.querySelector("td[class='mangaName']").innerText)
             updateSelectedAmount(-1);
         }
         else{
             row.classList.add("table-active");
-            window.selectedRows.push(row.querySelector("td[class='mangaName']").innerText); 
+            window.selectedMangas.push({
+                mangaName: row.querySelector("td[class='mangaName']").innerText,
+                chapters: []
+            }); 
             updateSelectedAmount(1);
         }
     }   
@@ -88,8 +172,15 @@ window.addEventListener("load", () => {
         toggleSearchButton();
         const results = await window.api.receive("get-mangas-by-name", document.getElementById("nameInput").value);
         clearElementInnerHTML(document.getElementsByTagName("tbody") ? document.getElementsByTagName("tbody")[0] : null);
-        insertResults(results);
+        insertMangaResults(results);
         toggleSearchButton();
+    }
+
+    const insertElementInnerHTML = (element, html) => {
+        if (!element || !html)
+            return;
+
+        element.innerHTML = html;
     }
 
     const clearElementInnerHTML = element => {
@@ -99,7 +190,7 @@ window.addEventListener("load", () => {
         element.innerHTML = null;
     }
 
-    const insertResults = results => {
+    const insertMangaResults = results => {
         const table = document.getElementsByTagName("table") ? document.getElementsByTagName("table")[0] : null;
         const tableTBody = document.getElementsByTagName("tbody") ? document.getElementsByTagName("tbody")[0] : null;
 
@@ -147,6 +238,12 @@ window.addEventListener("load", () => {
         const tableHeaderName = document.getElementById("tableHeaderName");
         const tableHeaderDescription = document.getElementById("tableHeaderDescription");
         const tableHeaderChapters = document.getElementById("tableHeaderChapters");
+        const pathInputLabel = document.getElementById("pathInputLabel");
+        const pathInput = document.getElementById("pathInput");
+        const closeButton = document.getElementById("closeButton");
+        const deselectAllButton = document.getElementById("deselectAllButton");
+        const selectAllButton = document.getElementById("selectAllButton");
+        const downloadSelectedButton = document.getElementById("downloadSelectedButton");
 
         title.innerText = translations.TITLE;
         nameInput.placeholder = translations.NAME_INPUT_PLACEHOLDER;
@@ -158,16 +255,27 @@ window.addEventListener("load", () => {
         tableHeaderName.innerText = translations.TABLE_HEADER_NAME;
         tableHeaderDescription.innerText = translations.TABLE_HEADER_DESCRIPTION;
         tableHeaderChapters.innerText = translations.TABLE_HEADER_SELECT_CHAPTERS_TITLE;
+        pathInputLabel.innerText = translations.PATH_INPUT_LABEL;
+        pathInput.placeholder = translations.PATH_INPUT_PLACEHOLDER;
+        closeButton.innerText = translations.MODAL_CLOSE_BBUTTON;
+        deselectAllButton.innerText = translations.MODAL_DESELECT_ALL_BUTTON;
+        selectAllButton.innerText = translations.MODAL_SELECT_ALL_BUTTON;
+        downloadSelectedButton.innerText = translations.MODAL_DOWNLOAD_BUTTON;
 
         window.activeTranslations = translations;
     }
      
     const searchButton = document.getElementById("searchButton");
     const table = document.getElementsByTagName("table")[0];
+    const deselectAllButton = document.getElementById("deselectAllButton");
+    const selectAllButton = document.getElementById("selectAllButton");
+
     searchButton.addEventListener("click", searchForMangas);
     table.addEventListener("click", selectTableRow);
+    deselectAllButton.addEventListener("click", deselectAllChapters);
+    selectAllButton.addEventListener("click", selectAllChapters);
 
-    window.selectedRows = window.selectedRows ? window.selectedRows : [];
+    window.selectedMangas = window.selectedMangas ? window.selectedMangas : [];
 
     loadLanguages();
 
