@@ -10,9 +10,7 @@ contextBridge.exposeInMainWorld("api", {
       result = ipcRenderer.invoke(channel, args);
     
     return result;
-  },
-  getLanguages: () =>  ipcRenderer.invoke("get-languages"),
-  getMangasByName: name => ipcRenderer.invoke("get-mangas-by-name", name)
+  }
 });
 
 window.addEventListener("DOMContentLoaded", () => {

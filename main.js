@@ -19,10 +19,9 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  ipcMain.handle("get-manga-files-by-chapter", (event, mangaChapterData) => {
-    const { directory, mangaName, url, chapter } = mangaChapterData;
-    const mangaChapterFiles = getMangaFilesByChapter(mangaName, url, chapter);
-    return downloadMangaIntoDirectory(directory, mangaChapterFiles);
+  ipcMain.handle("get-manga-files-by-chapter", async (event, mangaChapterData) => {
+    const mangaChapterFiles = await getMangaFilesByChapter(mangaChapterData);
+    return await downloadMangaIntoDirectory(mangaChapterData.directory, mangaChapterFiles);
   });
 
   ipcMain.handle("get-chapters", (event, args) => getChapterByMangaURL(args));
@@ -62,21 +61,3 @@ app.on('window-all-closed', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-// ipcMain.on("get-languages", (event, args) => {
-//   // win.webContents.send("send-languages", `test_${String(getLanguagesJSON())}`);
-//   // win.webContents.send("send-languages", getLanguagesJSON());
-  
-//   console.log("main");
-//   console.log(args);
-//   event.sender.send("send-languages", getLanguagesJSON());
-// });
-
-// ipcMain.on("get-mangas-by-name", (event, args) => {
-//   // win.webContents.send("send-languages", `test_${String(getLanguagesJSON())}`);
-//   // win.webContents.send("send-languages", getLanguagesJSON());
-  
-//   console.log("main");
-//   console.log(args);
-//   event.sender.send("send-mangas", getLanguagesJSON());
-// });

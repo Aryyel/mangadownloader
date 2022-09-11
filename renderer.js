@@ -49,18 +49,59 @@ window.addEventListener("load", () => {
         }
     }
 
-    const downloadSelectedChapters = () => {
+    const toggleChapter = event => {
+        const modalTitle = document.getElementById("modalTitle");
+        const chapterElement = event.target;
 
-        const directory = document.getElementById("pathInput");
-        const mangaName = document.getElementById("pathInput");
-        const url = document.getElementById("pathInput");
-        const chapter = document.getElementById("pathInput");
-
-        const chaptersToDownload = {
-            
+        if (chapterElement.classList.contains("active")){
+            chapterElement.classList.remove("active");
+            chapterElement.setAttribute("aria-pressed", "false");
+            removeDeselectedChapters(modalTitle.innerText, chapterElement.innerText);
         }
+        else {
+            chapterElement.classList.add("active");
+            chapterElement.setAttribute("aria-pressed", "true");
+            addSelectedChapters(modalTitle.innerText, chapterElement.innerText);
+        } 
 
-        window.api.receive("get-manga-files-by-chapter", )
+    }
+
+    const downloadSelectedChapters = async () => {
+
+        const downloadSelectedButton = document.getElementById("downloadSelectedButton");
+        const directory = document.getElementById("pathInput").value;
+        const mangaName = document.getElementById("modalTitle").innerText;
+        const url = document.getElementById("modalTitle").getAttribute("manga-url");
+        const selectedManga = window.selectedMangas.find(selectedManga => selectedManga.mangaName == mangaName);
+        const translations = {
+            spinnerTranslation: window.activeTranslations.DOWNLOADING_TEXT,
+            buttonTextTranslation: window.activeTranslations.MODAL_DOWNLOAD_BUTTON
+        };
+        const chaptersToDownload = {
+            directory,
+            mangaName,
+            url,
+            chapter: null
+        };
+
+        // TODO - Error message/alert/modal
+        if (!downloadSelectedButton|| !directory || !mangaName || !url || !selectedManga)
+            return;
+
+        
+        toggleElementButton(downloadSelectedButton, translations);
+        for (const chapter of selectedManga.chapters) {
+            chaptersToDownload.chapter = chapter;
+            await window.api.receive("get-manga-files-by-chapter", chaptersToDownload);
+        };
+        toggleElementButton(downloadSelectedButton, translations);
+    }
+
+    const htmlToElement = html =>  {
+        const template = document.createElement("template");
+        html = html.trim(); // Never return a text node of whitespace as the result
+        template.innerHTML = html;
+        return template.content.firstChild;
     }
 
     const addManyEventListeners = (element, type, callbackFunction) => 
@@ -71,63 +112,56 @@ window.addEventListener("load", () => {
         const modalChapters = document.getElementById("chapters");
         const modalTitle = document.getElementById("modalTitle");
 
-        if (!results || !modalChapters || !modalTitle)
+        if (!results || !results.chapterNumbers || !modalChapters || !modalTitle)
             return;
         
-        for (const result of results) {
-            modalChapters.innerHTML += `<a class="btn btn-primary mb-1" style="width: 65px;" 
-                                        type="submit" data-bs-toggle="button">${result.chapterNumber}</a>`;
+        for (const result of results.chapterNumbers) {
+            const newChapterButton = htmlToElement(`<a class="btn btn-primary mb-1" style="width: 65px;" 
+            type="submit">${result.chapterNumber}</a>`); //data-bs-toggle="button" to use bootstrap's version
             
-            
-            const selectedManga = window.selectedMangas.find(selectedManga => selectedManga.mangaName == modalTitle.innerText);
-
-            if (selectedManga){
-                window.selectedMangas.find(selectedManga => selectedManga.mangaName == modalTitle.innerText).chapters.push(result.chapterNumber);
-            }
-            else {
-                window.selectedMangas.push({
-                    mangaName: modalTitle.innerText,
-                    chapters: []
-                }); 
-            }
-            
+            modalChapters.append(newChapterButton);
+            newChapterButton.addEventListener("click", toggleChapter);
         }
 
-        // const chapters = document.querySelectorAll("#chapters a");
+        modalTitle.setAttribute("manga-url", results.url);
     }
 
     const loadChaptersByMangaURL = async event => {
         
         const modalTitle = document.getElementById("modalTitle");
-        clearElementInnerHTML(document.getElementById("chapters"));
+        const mangaName = event.target.closest("tr").querySelector(".mangaName").innerText;
+        const chapters = document.getElementById("chapters");
+        clearElementInnerHTML(chapters);
         clearElementInnerHTML(modalTitle);
+        modalTitle.setAttribute("manga-url", "");
         const response = await window.api.receive("get-chapters", event.target.getAttribute("manga"));
 
         if (!response)
             return;
         
         insertChaptersIntoModal(response);
-        insertElementInnerHTML(modalTitle, event.target.closest("tr").querySelector(".mangaName").innerText);
+        insertElementInnerHTML(modalTitle, mangaName);
     }
 
-    const toggleSearchButton = () => {
-        const searchButton = document.getElementById("searchButton");
-        if (!searchButton)
+    const toggleElementButton = (element, translations) => {
+        if (!element)
             return;
 
-        searchButton.disabled 
-            ? searchButton.removeAttribute("disabled") 
-            : searchButton.setAttribute("disabled", "");
+        element.disabled 
+            ? element.removeAttribute("disabled") 
+            : element.setAttribute("disabled", "");
         
-        toggleLoading();
+        toggleLoading(element, translations);
     }
 
-    const toggleLoading = () => {
-        const searchButton = document.getElementById("searchButton");
-        searchButton.disabled 
-            ? searchButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span>${window.activeTranslations.LOADING_TEXT}</span>`
-            : searchButton.innerHTML = window.activeTranslations.SEARCH_BUTTON_TEXT;
+    const toggleLoading = (element, translations) => {
+        if (!element)
+            return;
+
+        element.disabled 
+            ? element.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span>${translations.spinnerTranslation}</span>`
+            : element.innerHTML = translations.buttonTextTranslation;
     }
 
     const updateSelectedAmount = amount => {
@@ -168,12 +202,17 @@ window.addEventListener("load", () => {
         toggleSelectedRow(parentElement);
     }
 
-    const searchForMangas = async () => {
-        toggleSearchButton();
+    const searchForMangas = async () => {    
+        const searchButton = document.getElementById("searchButton");
+        const translations = {
+            spinnerTranslation: window.activeTranslations.LOADING_TEXT,
+            buttonTextTranslation: window.activeTranslations.SEARCH_BUTTON_TEXT
+        };
+        toggleElementButton(searchButton, translations);
         const results = await window.api.receive("get-mangas-by-name", document.getElementById("nameInput").value);
         clearElementInnerHTML(document.getElementsByTagName("tbody") ? document.getElementsByTagName("tbody")[0] : null);
         insertMangaResults(results);
-        toggleSearchButton();
+        toggleElementButton(searchButton, translations);
     }
 
     const insertElementInnerHTML = (element, html) => {
@@ -269,11 +308,13 @@ window.addEventListener("load", () => {
     const table = document.getElementsByTagName("table")[0];
     const deselectAllButton = document.getElementById("deselectAllButton");
     const selectAllButton = document.getElementById("selectAllButton");
+    const downloadSelectedButton = document.getElementById("downloadSelectedButton");
 
     searchButton.addEventListener("click", searchForMangas);
     table.addEventListener("click", selectTableRow);
     deselectAllButton.addEventListener("click", deselectAllChapters);
     selectAllButton.addEventListener("click", selectAllChapters);
+    downloadSelectedButton.addEventListener("click", downloadSelectedChapters);
 
     window.selectedMangas = window.selectedMangas ? window.selectedMangas : [];
 

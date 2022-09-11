@@ -1,7 +1,10 @@
 const axios = require("axios");
 const cheerio  = require("cheerio");
 const MANGA_HOST_URL = "https://mangahosted.com/find/";
+const MANGA_HOST_FILES_DEFAULT_URL = "https://img-host.filestatic3.xyz/mangas_files/";
+const MANGA_HOST_FILES_DEFAULLT_URL_EXAMPLE = "https://img-host.filestatic3.xyz/mangas_files/overlord/67.2/img_or0307221621_0001.jpg";
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36";
+
 
 const getMangaByName = async name => {
 
@@ -16,8 +19,7 @@ const getMangaByName = async name => {
 
         const $ = cheerio.load(data);
 
-		$("td:not([width])").each((index, element) => {
-            console.log($(element).find(".entry-title a").attr("href"));
+		$("td:not([width])").each((index, element) => {;
 			results.push({
                 mangaName: `${$(element).children(".entry-title").text()}`,
                 mangaDescription: `${$(element).children(".entry-content").text()}`,
@@ -33,7 +35,10 @@ const getMangaByName = async name => {
 }
 
 const getChapterByMangaURL = async url => {
-    const results = [];
+    const results = {
+        url,
+        chapterNumbers: []
+    };
 
     try {
         const { data } = await axios.get(`${url}`, {
@@ -45,9 +50,7 @@ const getChapterByMangaURL = async url => {
         const $ = cheerio.load(data);
 
         $(".cap").each((index, element) => {
-            console.log($(element).children("a.btn-caps.w-button").text());
-            console.log($(element).children("a.btn-caps.w-button").attr("id"));
-            results.push({
+            results.chapterNumbers.push({
                 chapterNumber: `${$(element).find("a.btn-caps.w-button").text()}`
             });
         });
@@ -59,7 +62,9 @@ const getChapterByMangaURL = async url => {
     return results;
 }
 
-const getMangaFilesByChapter = async (mangaName, url, chapter) => {
+const getMangaFilesByChapter = async mangaDownloadData => {
+    const { mangaName, chapter, url } = mangaDownloadData;
+
     const result = {
         mangaName,
         mangaURLs: [],
@@ -76,11 +81,8 @@ const getMangaFilesByChapter = async (mangaName, url, chapter) => {
 
         const $ = cheerio.load(data);
 
-        $("img[id^='img_").each((index, element) => {
-            //https://img-host.filestatic3.xyz/mangas_files/overlord/67.2/img_or0307221621_0001.jpg
-            result.mangaURLs.push({
-                chapterUrl: `${$(element).attr("src")}`
-            });
+        $("img[id^='img_']").each((index, element) => {
+            result.mangaURLs.push(`${$(element).attr("src")}`);
         });
         
     } catch (error) {
