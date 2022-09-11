@@ -8,18 +8,18 @@
 window.addEventListener("load", () => { 
 
     const removeDeselectedChapters = (mangaName, chapterNumber) => {
-        const selectedManga = window.selectedMangas.find(selectedManga => selectedManga.contains(mangaName));
+        const selectedManga = window.selectedMangas.find(selectedManga => selectedManga.mangaName == mangaName);
 
-        if (selectedManga){
-            window.selectedMangas.find(selectedManga => selectedManga.contains(mangaName)).chapters = selectedManga.chapters.filter(chapter => chapter !== chapterNumber);
-        }
+        if (selectedManga)
+            window.selectedMangas.find(selectedManga => selectedManga.mangaName == mangaName).chapters = selectedManga.chapters.filter(chapter => chapter !== chapterNumber);
+        
     }
 
     const addSelectedChapters = (mangaName, chapterNumber) => {
         const selectedManga = window.selectedMangas.find(selectedManga => selectedManga.mangaName == mangaName);
 
         if (selectedManga){
-            window.selectedMangas.find(selectedManga => selectedManga.contains(mangaName)).chapters.push(chapterNumber);
+            window.selectedMangas.find(selectedManga => selectedManga.mangaName == mangaName).chapters.push(chapterNumber);
         }
         else {
             window.selectedMangas.push({
