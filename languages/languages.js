@@ -1,8 +1,9 @@
 const fs = require("fs");
+const path = require("path");
 
 const getLanguagesJSON = () => {
 
-    const rawdata = fs.readFileSync("languages/languages.json");
+    const rawdata = fs.readFileSync(path.join(__dirname, "languages.json"));
     var languages = [];
   
     if (rawdata)

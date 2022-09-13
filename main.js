@@ -16,7 +16,9 @@ function createWindow () {
     webPreferences: {
       preload: path.join(__dirname, "preload.js")
     }
-  })
+  });
+
+  mainWindow.setIcon(path.join(__dirname, "icon/icon.ico"));;
 
   // and load the index.html of the app.
   ipcMain.handle("get-manga-files-by-chapter", async (event, mangaChapterData) => {
@@ -30,7 +32,7 @@ function createWindow () {
 
   ipcMain.handle("get-languages", (event, args) => getLanguagesJSON());
 
-  mainWindow.loadFile("index.html")
+  mainWindow.loadFile("index.html");
 
   win = mainWindow;
 
