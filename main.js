@@ -18,12 +18,11 @@ function createWindow () {
     }
   });
 
-  mainWindow.setIcon(path.join(__dirname, "icon/icon.ico"));;
+  mainWindow.setIcon(path.join(__dirname, "icon/icon.ico"));
 
-  // and load the index.html of the app.
   ipcMain.handle("get-manga-files-by-chapter", async (event, mangaChapterData) => {
     const mangaChapterFiles = await getMangaFilesByChapter(mangaChapterData);
-    return await downloadMangaIntoDirectory(mangaChapterData.directory, mangaChapterFiles);
+    return await downloadMangaIntoDirectory(mangaChapterData.directory, mangaChapterFiles, mainWindow);
   });
 
   ipcMain.handle("get-chapters", (event, args) => getChapterByMangaURL(args));
@@ -32,6 +31,7 @@ function createWindow () {
 
   ipcMain.handle("get-languages", (event, args) => getLanguagesJSON());
 
+  // and load the index.html of the app.
   mainWindow.loadFile("index.html");
 
   win = mainWindow;
@@ -48,18 +48,18 @@ app.whenReady().then(() => {
   createWindow()
 
   app.on("activate", function () {
-    // On macOS it"s common to re-create a window in the app when the
+    // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
 
-// Quit when all windows are closed, except on macOS. There, it"s common
+// Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on("window-all-closed", function () {
   if (process.platform !== "darwin") app.quit()
 })
 
-// In this file you can include the rest of your app"s specific main process
+// In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

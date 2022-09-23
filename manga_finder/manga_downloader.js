@@ -3,15 +3,18 @@ const path = require("path")
 const fs = require("fs");
 
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36";
+const ONLY_ALPHANUMERICAL_CHARACTERS = /[^a-zA-Z0-9 ]/g;
 
-const downloadMangaIntoDirectory = async (directory, mangaDownloadData) => {
-
+const downloadMangaIntoDirectory = async (directory, mangaDownloadData, mainWindow) => {
+    
     const completePath = path.join(
             directory, 
-            mangaDownloadData.mangaName, 
+            mangaDownloadData.mangaName.replace(ONLY_ALPHANUMERICAL_CHARACTERS, ""), 
             mangaDownloadData.chapter);
 
     let downloaded = 0;
+    let progressBarValue = 0;
+    const progressBarValuePerItem = 1 / mangaDownloadData.mangaURLs.length;
 
     try {
         let createDir = null;
@@ -45,11 +48,15 @@ const downloadMangaIntoDirectory = async (directory, mangaDownloadData) => {
                 throw pf;
 
             downloaded++;
+            progressBarValue += progressBarValuePerItem;
+            mainWindow.setProgressBar(progressBarValue);
         }
 
     } catch (error) {
         console.error(error);
     }
+
+    mainWindow.setProgressBar(-1);
 
     return downloaded;
 

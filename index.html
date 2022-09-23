@@ -10,7 +10,7 @@
     <title>Manga Downloader</title>
   </head>
   <body>
-    <div class="modal" tabindex="-1" id="chaptersModal">
+    <div class="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" id="chaptersModal">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -36,6 +36,8 @@
       <div class="card mb-3">
         <div class="card-header">
           <h1 id="title"></h1>
+        </div>
+        <div class="alert alert-danger d-none" role="alert" id="searchAlert">
         </div>
         <div class="card-body">
           <div class="mb-3">

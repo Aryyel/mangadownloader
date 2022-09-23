@@ -23,7 +23,8 @@
                 "MODAL_DOWNLOAD_BUTTON": "Baixar selecionados",
                 "MODAL_SELECT_ALL_BUTTON": "Selecionar todos",
                 "MODAL_DESELECT_ALL_BUTTON": "Desselecionar todos",
-                "MODAL_CLOSE_BBUTTON": "Fechar"
+                "MODAL_CLOSE_BUTTON": "Fechar",
+                "SEARCH_ALERT_ERROR_EMPTY_FIELDS": "Preencha todos os campos para iniciar a pesquisa"
 
             }
         },
@@ -50,7 +51,8 @@
                 "MODAL_DOWNLOAD_BUTTON": "Download selected",
                 "MODAL_SELECT_ALL_BUTTON": "Select all",
                 "MODAL_DESELECT_ALL_BUTTON": "Deselect all",
-                "MODAL_CLOSE_BBUTTON": "Close"
+                "MODAL_CLOSE_BUTTON": "Close",
+                "SEARCH_ALERT_ERROR_EMPTY_FIELDS": "Fill in all the fields to begin the search"
             }
         }
     ]

@@ -104,8 +104,7 @@ window.addEventListener("load", () => {
         return template.content.firstChild;
     }
 
-    const addManyEventListeners = (element, type, callbackFunction) => 
-    element.addEventListener(type, callbackFunction)
+    const addManyEventListeners = (element, type, callbackFunction) => element.addEventListener(type, callbackFunction)
 
     const insertChaptersIntoModal = results => {
 
@@ -202,7 +201,33 @@ window.addEventListener("load", () => {
         toggleSelectedRow(parentElement);
     }
 
-    const searchForMangas = async () => {    
+    const toggleAlert = (element, override = false) => 
+        element && element.classList.contains("d-none") && !override
+        ? element.classList.remove("d-none") : element.classList.add("d-none"); 
+
+    const validateSearchFields = () => {
+        const translations = window.activeTranslations;
+        const searchAlert = document.getElementById("searchAlert");
+        const nameInput = document.getElementById("nameInput");
+        const pathInput = document.getElementById("pathInput");
+        let errors = false;
+        
+        toggleAlert(searchAlert, true);
+
+        if (!nameInput.value || !pathInput.value){
+            toggleAlert(searchAlert);
+            searchAlert.innerText = translations.SEARCH_ALERT_ERROR_EMPTY_FIELDS;
+            errors = true;
+        }
+        
+        return errors;
+    }
+
+    const searchForMangas = async () => {   
+        const errors = validateSearchFields(); 
+        if (errors)
+            return;
+
         const searchButton = document.getElementById("searchButton");
         const translations = {
             spinnerTranslation: window.activeTranslations.LOADING_TEXT,
@@ -283,7 +308,8 @@ window.addEventListener("load", () => {
         const deselectAllButton = document.getElementById("deselectAllButton");
         const selectAllButton = document.getElementById("selectAllButton");
         const downloadSelectedButton = document.getElementById("downloadSelectedButton");
-
+        const searchAlert = document.getElementById("searchAlert");
+        
         title.innerText = translations.TITLE;
         nameInput.placeholder = translations.NAME_INPUT_PLACEHOLDER;
         nameInputLabel.innerText = translations.NAME_INPUT_LABEL;
@@ -296,14 +322,14 @@ window.addEventListener("load", () => {
         tableHeaderChapters.innerText = translations.TABLE_HEADER_SELECT_CHAPTERS_TITLE;
         pathInputLabel.innerText = translations.PATH_INPUT_LABEL;
         pathInput.placeholder = translations.PATH_INPUT_PLACEHOLDER;
-        closeButton.innerText = translations.MODAL_CLOSE_BBUTTON;
+        closeButton.innerText = translations.MODAL_CLOSE_BUTTON;
         deselectAllButton.innerText = translations.MODAL_DESELECT_ALL_BUTTON;
         selectAllButton.innerText = translations.MODAL_SELECT_ALL_BUTTON;
         downloadSelectedButton.innerText = translations.MODAL_DOWNLOAD_BUTTON;
 
         window.activeTranslations = translations;
     }
-     
+
     const searchButton = document.getElementById("searchButton");
     const table = document.getElementsByTagName("table")[0];
     const deselectAllButton = document.getElementById("deselectAllButton");

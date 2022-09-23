@@ -1,4 +1,4 @@
-# electron-quick-start
+# MangaDownloader
 
 **Clone and run for a quick way to see Electron in action.**
 
