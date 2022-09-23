@@ -68,6 +68,7 @@ window.addEventListener("load", () => {
 
     const downloadSelectedChapters = async () => {
 
+        const modalAlert = document.getElementById("modalAlert");
         const downloadSelectedButton = document.getElementById("downloadSelectedButton");
         const directory = document.getElementById("pathInput").value;
         const mangaName = document.getElementById("modalTitle").innerText;
@@ -84,9 +85,11 @@ window.addEventListener("load", () => {
             chapter: null
         };
 
-        // TODO - Error message/alert/modal
-        if (!downloadSelectedButton|| !directory || !mangaName || !url || !selectedManga)
+        if (!downloadSelectedButton|| !directory || !mangaName || !url || !selectedManga){
+            toggleAlert(modalAlert);
+            modalAlert.innerText = MODAL_ALERT_ERROR_EMPTY_FIELDS;
             return;
+        }
 
         
         toggleElementButton(downloadSelectedButton, translations);
@@ -153,16 +156,12 @@ window.addEventListener("load", () => {
         toggleLoading(element, translations);
     }
 
-    const toggleLoading = (element, translations) => {
-        if (!element)
-            return;
-
-        element.disabled 
+    const toggleLoading = (element, translations) => 
+        element && element.disabled 
             ? element.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span>${translations.spinnerTranslation}</span>`
             : element.innerHTML = translations.buttonTextTranslation;
-    }
-
+    
     const updateSelectedAmount = amount => {
         const selectedAmount = document.getElementById("selectedAmount");
         const newAmount = parseInt(selectedAmount.getAttribute("amount")) + amount;
@@ -247,12 +246,7 @@ window.addEventListener("load", () => {
         element.innerHTML = html;
     }
 
-    const clearElementInnerHTML = element => {
-        if (!element)
-            return;
-        
-        element.innerHTML = null;
-    }
+    const clearElementInnerHTML = element => element.innerHTML = null;
 
     const insertMangaResults = results => {
         const table = document.getElementsByTagName("table") ? document.getElementsByTagName("table")[0] : null;
