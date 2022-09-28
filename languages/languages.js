@@ -13,5 +13,5 @@ const getLanguagesJSON = () => {
 }
 
 module.exports = {
-    getLanguagesJSON
+  getLanguagesJSON
 }

@@ -87,7 +87,7 @@ window.addEventListener("load", () => {
 
         if (!downloadSelectedButton|| !directory || !mangaName || !url || !selectedManga){
             toggleAlert(modalAlert);
-            modalAlert.innerText = MODAL_ALERT_ERROR_EMPTY_FIELDS;
+            modalAlert.innerText = window.activeTranslations.MODAL_ALERT_ERROR_EMPTY_FIELDS;
             return;
         }
 
@@ -106,8 +106,6 @@ window.addEventListener("load", () => {
         template.innerHTML = html;
         return template.content.firstChild;
     }
-
-    const addManyEventListeners = (element, type, callbackFunction) => element.addEventListener(type, callbackFunction)
 
     const insertChaptersIntoModal = results => {
 
