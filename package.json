@@ -31,11 +31,15 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "icon/icon"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
+            "loadingGif": "icon/loading_gif.gif",
+            "setupIcon": "icon/icon.ico",
             "name": "manga_downloader"
           }
         },

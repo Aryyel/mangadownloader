@@ -1,9 +1,12 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, ipcMain } = require("electron")
-const path = require("path")
+const {app, BrowserWindow, ipcMain } = require("electron");
+const path = require("path");
 const { getLanguagesJSON } = require("./languages/languages");
 const { getMangaByName, getChapterByMangaURL, getMangaFilesByChapter } = require("./manga_finder/manga-finder");
 const { downloadMangaIntoDirectory } = require("./manga_finder/manga-downloader");
+
+if (require("electron-squirrel-startup")) return app.quit();
+
 let win;
 let mangahost = "https://mangahosted.com/find/";
 let mangahostimages = "https://img-host.filestatic3.xyz/mangas_files/my-wife-is-a-demon-queen/310/";
@@ -14,11 +17,13 @@ function createWindow () {
     width: 1280,
     height: 720,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js")
+      preload: path.join(__dirname, "preload.js"),
+      devTools: true
     }
   });
 
   mainWindow.setIcon(path.join(__dirname, "icon/icon.ico"));
+  // mainWindow.removeMenu();
 
   ipcMain.handle("get-manga-files-by-chapter", async (event, mangaChapterData) => {
     const mangaChapterFiles = await getMangaFilesByChapter(mangaChapterData);
@@ -37,7 +42,7 @@ function createWindow () {
   win = mainWindow;
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished

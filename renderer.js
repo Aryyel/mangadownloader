@@ -279,7 +279,7 @@ window.addEventListener("load", () => {
             return;
         
         window.languages = response.languages;
-        window.activeLanguageCode = "en-US";
+        window.activeLanguageCode = "pt-BR";
         insertTranslations(window.languages.filter(language => language.code === window.activeLanguageCode)[0].translations);
     }
     
