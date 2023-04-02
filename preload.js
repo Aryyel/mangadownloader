@@ -10,6 +10,11 @@ contextBridge.exposeInMainWorld("api", {
       result = ipcRenderer.invoke(channel, args);
     
     return result;
+  },
+  send: (channel, args) => {
+    const validChannels = ["open-downloaded-results"];
+    if (validChannels.includes(channel))
+      ipcRenderer.invoke(channel, args);
   }
 });
 

@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, ipcMain } = require("electron");
+const {app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("path");
 const { getLanguagesJSON } = require("./languages/languages");
 const { getMangaByName, getChapterByMangaURL, getMangaFilesByChapter } = require("./manga_finder/manga-finder");
@@ -35,6 +35,8 @@ function createWindow () {
   ipcMain.handle("get-mangas-by-name", (event, args) => getMangaByName(args));
 
   ipcMain.handle("get-languages", (event, args) => getLanguagesJSON());
+
+  ipcMain.handle("open-downloaded-results", (event, args) => shell.openPath(args));
 
   // and load the index.html of the app.
   mainWindow.loadFile("index.html");

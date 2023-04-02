@@ -17,11 +17,7 @@ const downloadMangaIntoDirectory = async (directory, mangaDownloadData, mainWind
     const progressBarValuePerItem = 1 / mangaDownloadData.mangaURLs.length;
 
     try {
-        let createDir = null;
-        if (!fs.existsSync(completePath))
-            createDir = await fs.promises.mkdir(completePath, { recursive: true });
-        else
-            createDir = completePath;
+        let createDir = !fs.existsSync(completePath) ? await fs.promises.mkdir(completePath, { recursive: true }) : completePath;
 
         if (!createDir)
             throw new Error("Dir was not created");
@@ -29,7 +25,7 @@ const downloadMangaIntoDirectory = async (directory, mangaDownloadData, mainWind
         for (const mangaURL of mangaDownloadData.mangaURLs) {
 
             const mangaImageName = mangaURL.split("/").slice(-1)[0];
-
+            
             const { data } = await axios({
                 method:"GET",
                 url: `${mangaURL}`,
@@ -48,8 +44,7 @@ const downloadMangaIntoDirectory = async (directory, mangaDownloadData, mainWind
                 throw pf;
 
             downloaded++;
-            progressBarValue += progressBarValuePerItem;
-            mainWindow.setProgressBar(progressBarValue);
+            mainWindow.setProgressBar(progressBarValue += progressBarValuePerItem);
         }
 
     } catch (error) {

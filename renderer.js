@@ -38,6 +38,8 @@
     const modalTitle = document.getElementById("modalTitle");
     const modalChapters = document.getElementById("chapters");
 
+    const ONLY_ALPHANUMERICAL_CHARACTERS = /[^a-zA-Z0-9 ]/g;
+
     const init = async () => {
         await setLanguages();
         bindEvents([
@@ -70,8 +72,8 @@
         ? element.classList.remove("d-none") : element.classList.add("d-none"); 
 
     const getMangas = async () => {   
+        if (!validateSearchFields()) return;
         const results = await window.api.receive("get-mangas-by-name", nameInput.value);
-        if (!results || !validateSearchFields()) return;
 
         toggleElementButton(searchButton);
         setElementInnerHTML(tableTBody, null);
@@ -168,6 +170,12 @@
 
     const setButtonText = (element, text) => element.innerHTML = text;
 
+    const setSelectedAmount = amount => {
+        const newAmount = parseInt(selectedAmount.getAttribute("amount")) + amount;
+        selectedAmount.innerText = `${getObjectAttributeByName("activeTranslations").SELECTED_AMOUNT_TEXT}: ${newAmount}`
+        selectedAmount.setAttribute("amount", newAmount);
+    }
+
     const removeDeselectedChapters = (mangaName, chapterNumber) => {
         const selectedManga = getObjectAttributeByName("selectedMangas").find(selectedManga => selectedManga.mangaName === mangaName);
 
@@ -247,6 +255,8 @@
             await window.api.receive("get-manga-files-by-chapter", chaptersToDownload);
         };
         toggleElementButton(downloadSelectedButton, translations);
+        
+        window.api.send("open-downloaded-results", createValidPath(directory, mangaName));
     }
 
     const htmlToElement = html =>  {
@@ -269,12 +279,6 @@
             ? element.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span>${getObjectAttributeByName("activeTranslations").LOADING_TEXT}</span>`
             : element.innerHTML = getObjectAttributeByName("activeTranslations").SEARCH_BUTTON_TEXT;
-    
-    const setSelectedAmount = amount => {
-        const newAmount = parseInt(selectedAmount.getAttribute("amount")) + amount;
-        selectedAmount.innerText = `${getObjectAttributeByName("activeTranslations").SELECTED_AMOUNT_TEXT}: ${newAmount}`
-        selectedAmount.setAttribute("amount", newAmount);
-    }
 
     const toggleSelectedRow = row => {
         
@@ -309,7 +313,9 @@
         toggleSelectedRow(parentElement);
     }
 
-    experimental = experimental || {};
+    const createValidPath = (directory, mangaName) => directory && mangaName ? `${directory}\\${mangaName.replace(ONLY_ALPHANUMERICAL_CHARACTERS, "")}` : "";
+
+    // experimental = experimental || {};
     experimental.init = init || {};
 
 })(window.experimental = window.experimental || {}); 

@@ -81,9 +81,7 @@ const getMangaFilesByChapter = async mangaDownloadData => {
 
         const $ = cheerio.load(data);
 
-        $("img[id^='img_']").each((index, element) => {
-            result.mangaURLs.push(`${$(element).attr("src")}`);
-        });
+        $("img[id^='img_']").each((index, element) => result.mangaURLs.push(`${$(element).attr("src")}`));
         
     } catch (error) {
         console.error(error);
