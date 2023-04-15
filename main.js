@@ -23,7 +23,7 @@ function createWindow () {
   });
 
   mainWindow.setIcon(path.join(__dirname, "icon/icon.ico"));
-  // mainWindow.removeMenu();
+  mainWindow.removeMenu();
 
   ipcMain.handle("get-manga-files-by-chapter", async (event, mangaChapterData) => {
     const mangaChapterFiles = await getMangaFilesByChapter(mangaChapterData);
@@ -46,7 +46,7 @@ function createWindow () {
   win = mainWindow;
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
