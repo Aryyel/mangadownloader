@@ -27,9 +27,7 @@ function createWindow () {
 
   ipcMain.handle("get-manga-files-by-chapter", async (event, mangaChapterData) => {
     const mangaChapterFiles = await getMangaFilesByChapter(mangaChapterData);
-    const downloaded = await downloadMangaIntoDirectory(mangaChapterData.directory, mangaChapterFiles, mainWindow);
-    // showNotification(mangaChapterData.mangaName);
-    return downloaded;
+    return downloaded = await downloadMangaIntoDirectory(mangaChapterData.directory, mangaChapterFiles, mainWindow);
   });
 
   ipcMain.handle("get-chapters", (event, args) => getChapterByMangaURL(args));
