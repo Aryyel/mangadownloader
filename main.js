@@ -8,8 +8,8 @@ const { downloadMangaIntoDirectory } = require("./manga_finder/manga-downloader"
 if (require("electron-squirrel-startup")) return app.quit();
 
 let win;
-let mangahost = "https://mangahosted.com/find/";
-let mangahostimages = "https://img-host.filestatic3.xyz/mangas_files/my-wife-is-a-demon-queen/310/";
+const MANGA_HOST = "https://mangahosted.com/find/";
+const MANGA_HOST_IMAGES = "https://img-host.filestatic3.xyz/mangas_files/my-wife-is-a-demon-queen/310/";
 
 function createWindow () {
   // Create the browser window.
@@ -27,7 +27,9 @@ function createWindow () {
 
   ipcMain.handle("get-manga-files-by-chapter", async (event, mangaChapterData) => {
     const mangaChapterFiles = await getMangaFilesByChapter(mangaChapterData);
-    return await downloadMangaIntoDirectory(mangaChapterData.directory, mangaChapterFiles, mainWindow);
+    const downloaded = await downloadMangaIntoDirectory(mangaChapterData.directory, mangaChapterFiles, mainWindow);
+    // showNotification(mangaChapterData.mangaName);
+    return downloaded;
   });
 
   ipcMain.handle("get-chapters", (event, args) => getChapterByMangaURL(args));
@@ -44,7 +46,7 @@ function createWindow () {
   win = mainWindow;
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished

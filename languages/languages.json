@@ -25,7 +25,10 @@
                 "MODAL_DESELECT_ALL_BUTTON": "Desselecionar todos",
                 "MODAL_CLOSE_BUTTON": "Fechar",
                 "SEARCH_ALERT_ERROR_EMPTY_FIELDS": "Preencha todos os campos para iniciar a pesquisa",
-                "MODAL_ALERT_ERROR_EMPTY_FIELDS": "Preencha todos os campos para iniciar o download"
+                "MODAL_ALERT_ERROR_EMPTY_FIELDS": "Preencha todos os campos para iniciar o download",
+                "CHAPTER_DOWNLOADED_1": "Capítulo",
+                "CHAPTER_DOWNLOADED_2": "baixado",
+                "CHAPTER_DOWNLOADED_TIME": "Agora mesmo"
             }
         },
         {
@@ -53,7 +56,10 @@
                 "MODAL_DESELECT_ALL_BUTTON": "Deselect all",
                 "MODAL_CLOSE_BUTTON": "Close",
                 "SEARCH_ALERT_ERROR_EMPTY_FIELDS": "Fill in all the fields to begin the search",
-                "MODAL_ALERT_ERROR_EMPTY_FIELDS": "Fill in all the fields to begin the download"
+                "MODAL_ALERT_ERROR_EMPTY_FIELDS": "Fill in all the fields to begin the download",
+                "CHAPTER_DOWNLOADED_1": "Chapter",
+                "CHAPTER_DOWNLOADED_2": "downloaded",
+                "CHAPTER_DOWNLOADED_TIME": "Just now"
             }
         }
     ]

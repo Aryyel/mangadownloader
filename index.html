@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://img-host.filestatic3.xyz/ https://mangahosted.com/find/ data: 'self'; frame-src https://mangahosted.com/find/; script-src 'self'; style-src 'self' 'unsafe-inline'">
     <link href="./styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <title>Manga Downloader</title>
   </head>
   <body>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastStack">    
+    </div>
     <div class="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" id="chaptersModal">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
