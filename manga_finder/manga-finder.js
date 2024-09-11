@@ -1,17 +1,16 @@
 const axios = require("axios");
 const cheerio  = require("cheerio");
-const MANGA_HOST_URL = "https://mangahosted.com/find/";
-const MANGA_HOST_FILES_DEFAULT_URL = "https://img-host.filestatic3.xyz/mangas_files/";
-const MANGA_HOST_FILES_DEFAULLT_URL_EXAMPLE = "https://img-host.filestatic3.xyz/mangas_files/overlord/67.2/img_or0307221621_0001.jpg";
+// const NEW_MANGA_URL = "https://tsuki-mangas.com/lista-completa&title=";
+const NEW_MANGA_URL = "https://mangabr.net/";
+const SELECTED_MANGA_URL = "https://tsuki-mangas.com/";
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36";
-
 
 const getMangaByName = async name => {
 
     const results = [];
 
     try {
-        const { data } = await axios.get(`${MANGA_HOST_URL}${name}`, {
+        const { data } = await axios.get(`${NEW_MANGA_URL}${name}`, {
             headers: {
                 "User-Agent": USER_AGENT
             }
@@ -19,11 +18,11 @@ const getMangaByName = async name => {
 
         const $ = cheerio.load(data);
 
-		$("td:not([width])").each((index, element) => {;
+		$("a.contentlist").each((index, element) => {;
 			results.push({
-                mangaName: `${$(element).children(".entry-title").text()}`,
-                mangaDescription: `${$(element).children(".entry-content").text()}`,
-                mangaURL: `${$(element).find(".entry-title a").attr("href")}`
+                mangaName: `${$(element).children(".titlelist b").text()}`,
+                mangaDescription: `${$(element).children(".titlelist b").text()}`,
+                mangaURL: `${SELECTED_MANGA_URL}${$(element).attr("href")}`
             });
 		});
         
