@@ -161,7 +161,7 @@
         
         for (const result of results.chapterNumbers) {
             const newChapterButton = htmlToElement(`
-                <a class="btn btn-primary mb-1" style="width: 65px;" type="submit">${result.chapterNumber}</a>
+                <a class="btn btn-primary mb-1" style="width: 65px;" type="submit" chapter="${result.chapterURL}">${result.chapterNumber}</a>
             `); //data-bs-toggle="button" to use bootstrap's version
             
             modalChapters.append(newChapterButton);

@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cheerio  = require("cheerio");
 // const NEW_MANGA_URL = "https://tsuki-mangas.com/lista-completa&title=";
-const NEW_MANGA_URL = "https://mangabr.net/";
+const NEW_MANGA_URL = "https://manganato.com/search/story/";
 const SELECTED_MANGA_URL = "https://tsuki-mangas.com/";
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36";
 
@@ -18,11 +18,11 @@ const getMangaByName = async name => {
 
         const $ = cheerio.load(data);
 
-		$("a.contentlist").each((index, element) => {;
+		$("div.search-story-item").each((index, element) => {;
 			results.push({
-                mangaName: `${$(element).children(".titlelist b").text()}`,
-                mangaDescription: `${$(element).children(".titlelist b").text()}`,
-                mangaURL: `${SELECTED_MANGA_URL}${$(element).attr("href")}`
+                mangaName: `${$(element).children(".item-img").attr("title")}`,
+                mangaDescription: ``,
+                mangaURL: `${$(element).children(".item-img").attr("href")}`
             });
 		});
         
@@ -48,9 +48,10 @@ const getChapterByMangaURL = async url => {
 
         const $ = cheerio.load(data);
 
-        $(".cap").each((index, element) => {
+        $("li.a-h").each((index, element) => {
             results.chapterNumbers.push({
-                chapterNumber: `${$(element).find("a.btn-caps.w-button").text()}`
+                chapterNumber: `${$(element).children("a.chapter-name").text()}`,
+                chapterURL: `${$(element).children("a.chapter-name").attr("href")}`
             });
         });
         
